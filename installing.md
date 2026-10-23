@@ -4,19 +4,6 @@ This chapter sets up ModelFlow on a Windows PC: Miniforge (a small conda
 distribution), a conda environment with ModelFlow, and the programs to work
 in: Jupyter Notebook 7, JupyterLab, Spyder and VS Code.
 
-If you only want to try ModelFlow, you don't have to install anything:
-
-- [**ModelFlow in the browser (JupyterLite)**](https://ibhansen.github.io/jupyter_lite/)
-  runs ModelFlow inside your web browser. Nothing to install and no account
-  needed. It opens with the Pakistan model, and has the World Bank country
-  models and examples. Solving is slower than on a PC (no numba), and the
-  Dash dashboards don't work.
-- [**ModelFlow in a GitHub Codespace**](https://codespaces.new/IbHansen/modelflow-codespace?quickstart=1)
-  runs a full ModelFlow installation on a Linux machine in the cloud, with
-  Jupyter Notebook and VS Code in the browser. It needs a free GitHub account;
-  see the [Codespace repository](https://github.com/IbHansen/modelflow-codespace)
-  for how to use it.
-
 ## 1. Install Miniforge with winget
 
 [Miniforge](https://github.com/conda-forge/miniforge) is a minimal conda
@@ -98,10 +85,8 @@ running. Smart App Control is already off on many PCs, for instance most
 company-managed PCs and PCs upgraded from Windows 10.
 :::
 
-If you can't or won't turn it off, use the
-[JupyterLite site](https://ibhansen.github.io/jupyter_lite/) or the
-[Codespace](https://codespaces.new/IbHansen/modelflow-codespace?quickstart=1).
-They run ModelFlow without installing anything on Windows.
+If you can't or won't turn it off, ModelFlow can still run in the browser;
+see *Trying ModelFlow without installing* at the end of this chapter.
 
 ### Updating ModelFlow later
 
@@ -239,4 +224,11 @@ Set-ExecutionPolicy -Scope CurrentUser RemoteSigned
 | Spyder | Standalone installer from spyder-ide.org; set its interpreter to the `modelflow` environment |
 | Update ModelFlow | Run the `conda create` command again (in a new Miniforge Prompt) |
 | Optional: conda in cmd and PowerShell | `conda init cmd.exe powershell` |
-| Try without installing | [JupyterLite](https://ibhansen.github.io/jupyter_lite/) (browser) or the [Codespace](https://codespaces.new/IbHansen/modelflow-codespace?quickstart=1) (cloud) |
+
+## 8. Trying ModelFlow without installing
+
+[**ModelFlow in the browser (JupyterLite)**](https://ibhansen.github.io/jupyter_lite/)
+runs ModelFlow inside your web browser, with nothing to install and no account
+needed. It opens with the Pakistan model, and has the World Bank country models
+and examples. Solving is slower than on a PC (no numba), and the Dash
+dashboards don't work.
