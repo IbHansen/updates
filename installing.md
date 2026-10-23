@@ -4,9 +4,18 @@ This chapter sets up ModelFlow on a Windows PC: Miniforge (a small conda
 distribution), a conda environment with ModelFlow, and the programs to work
 in: Jupyter Notebook 7, JupyterLab, Spyder and VS Code.
 
-If you only want to try ModelFlow, you don't have to install anything. The
-JupyterLite site runs ModelFlow in the browser, and the Codespace runs it in
-the cloud.
+If you only want to try ModelFlow, you don't have to install anything:
+
+- [**ModelFlow in the browser (JupyterLite)**](https://ibhansen.github.io/jupyter_lite/)
+  runs ModelFlow inside your web browser. Nothing to install and no account
+  needed. It opens with the Pakistan model, and has the World Bank country
+  models and examples. Solving is slower than on a PC (no numba), and the
+  Dash dashboards don't work.
+- [**ModelFlow in a GitHub Codespace**](https://codespaces.new/IbHansen/modelflow-codespace?quickstart=1)
+  runs a full ModelFlow installation on a Linux machine in the cloud, with
+  Jupyter Notebook and VS Code in the browser. It needs a free GitHub account;
+  see the [Codespace repository](https://github.com/IbHansen/modelflow-codespace)
+  for how to use it.
 
 ## 1. Install Miniforge with winget
 
@@ -38,7 +47,7 @@ Keep ModelFlow in its own environment, not in `base`. Then an update of one
 project can't break another. Open the **Miniforge Prompt** and run:
 
 ```
-conda create -n modelflow -c conda-forge python=3.12 ibh::modelflow jupyterlab spyder-kernels -y
+conda create -n modelflow -c conda-forge python=3.14 ibh::modelflow jupyterlab spyder-kernels -y
 conda activate modelflow
 pip install dash-interactive-graphviz
 ```
@@ -89,7 +98,9 @@ running. Smart App Control is already off on many PCs, for instance most
 company-managed PCs and PCs upgraded from Windows 10.
 :::
 
-If you can't or won't turn it off, use the JupyterLite site or the Codespace.
+If you can't or won't turn it off, use the
+[JupyterLite site](https://ibhansen.github.io/jupyter_lite/) or the
+[Codespace](https://codespaces.new/IbHansen/modelflow-codespace?quickstart=1).
 They run ModelFlow without installing anything on Windows.
 
 ### Updating ModelFlow later
@@ -100,7 +111,7 @@ asks whether to remove the existing environment; `-y` answers yes. Run it in a
 new Miniforge Prompt, where `modelflow` is not active:
 
 ```
-conda create -n modelflow -c conda-forge python=3.12 ibh::modelflow jupyterlab spyder-kernels -y
+conda create -n modelflow -c conda-forge python=3.14 ibh::modelflow jupyterlab spyder-kernels -y
 conda activate modelflow
 pip install dash-interactive-graphviz
 ```
@@ -221,10 +232,11 @@ Set-ExecutionPolicy -Scope CurrentUser RemoteSigned
 | Task | Command |
 |---|---|
 | Install Miniforge | `winget install -e --id CondaForge.Miniforge3` |
-| Create the ModelFlow environment | `conda create -n modelflow -c conda-forge python=3.12 ibh::modelflow jupyterlab -y` |
+| Create the ModelFlow environment | `conda create -n modelflow -c conda-forge python=3.14 ibh::modelflow jupyterlab -y` |
 | Activate it | `conda activate modelflow` |
 | Notebook 7 | `jupyter notebook` |
 | JupyterLab | `jupyter lab` |
 | Spyder | Standalone installer from spyder-ide.org; set its interpreter to the `modelflow` environment |
 | Update ModelFlow | Run the `conda create` command again (in a new Miniforge Prompt) |
 | Optional: conda in cmd and PowerShell | `conda init cmd.exe powershell` |
+| Try without installing | [JupyterLite](https://ibhansen.github.io/jupyter_lite/) (browser) or the [Codespace](https://codespaces.new/IbHansen/modelflow-codespace?quickstart=1) (cloud) |
