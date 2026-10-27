@@ -1,7 +1,8 @@
-# What is new in ModelFlow since the World Bank book
+# All changes since the book (2.59–2.92)
 
-The World Bank ModelFlow book is pinned to **version 2.58**. This page lists the changes from 2.59 up to **2.89** (October 2026), based on `changelog.md`. The version column shows the release where a change first shipped.
+This chapter lists every change from 2.59 to **2.92** (October 2026), based on `changelog.md`, grouped by topic. The version column shows the release where a change first shipped; *next* marks changes that are in the source but not yet released. For worked examples of the main features, see [New features by example](whats_new.ipynb).
 
+(changes-ng)=
 ## Next-generation (`_ng`) solvers
 
 From 2.73 there is a new solver framework (`modelsolver_ng`). Each old solver repeated the same setup, code generation, convergence test, statistics and teardown around a small iteration loop. In the `_ng` solvers all of this is written once in a shared base class (`SolverBase`). Every `_ng` solver inherits it and only adds its own iteration step. So a fix or a new option in the shared part works for all solvers at once, and a new solver is a small subclass.
@@ -32,6 +33,8 @@ From 2.89 a model can use the `_ng` solvers as its default: create or load it wi
 | 2.87 | Stacked Newton solvers skip a Jacobian rebuild once converged; `stats=True` reports the total build time |
 | 2.89 | `ng=True` model option: a call without `solver=` uses the `_ng` solvers; the add-factor model and `dekomp` follow it |
 | 2.89 | `newtonstack_ng` splits the model into prolog, core and epilog by default (`split=1`); the three parts run as compiled period loops, so the split also gains from jit (FRB/US with model-consistent expectations: 0.2–0.3 s per shock with jit) |
+| 2.90 | `newtonstack_ng` and `newtonstack_fbmin_ng` solve models with an endogenous variable at a fixed period inside the solve span, such as `Z = Y/Y(2006)*100` solved 2003–2010; the per-period solvers still refuse it and point to the stacked solvers |
+| 2.91 | `model.stack_info()` prints the size of the last stacked Newton system: periods, prolog/core/epilog split, Jacobian nonzeros and the memory of the LU factorization |
 
 ## Building and estimating models
 
@@ -42,7 +45,8 @@ This is a new way to write a model: describe it in a Markdown notebook cell, wit
 | Feature | What it does |
 |---|---|
 | `Makemodel(text)` | Turns a model template (Markdown or plain ModelFlow) into normalized FRMLs that are ready to solve |
-| `type_input=` | `'markdown'` (default), `'modelflow'` or `'single'` |
+| `type_input=` | `'markdown'` (default), `'modelflow'` or `'single'`; from 2.90 also `'gekko'` and `'eviews'` |
+| Non-markdown input | `eq_start=`, `eq_end=`, `comment_start=` and `transform=` pick the equations out of other text, such as Gekko or EViews programs (2.90) |
 | Expansion pipeline | `LIST`/`TLIST`, `DOABLE`, `DO` loops and `SUM` are expanded in turn; each step can be inspected |
 | `TLIST` | Transposed list: sublist names in the second row, values down the columns |
 | `DOABLE` | Writes one equation over a list as LaTeX-like shorthand and unrolls it |
@@ -123,6 +127,7 @@ This is a new way to write a model: describe it in a Markdown notebook cell, wit
 | `mm.pdf()` | The model documentation as PDF |
 | PNG plots by default | So notebooks with estimations also export to PDF in Jupyter Book |
 
+(changes-deployment)=
 ## Deployment in the cloud and the browser
 
 ModelFlow no longer needs a local installation. The same models and notebooks now run in several cloud and browser systems:
@@ -162,6 +167,7 @@ This needed a number of changes and fixes, listed below.
 | 2.71 | `colab_link`: link/badge to open a notebook in Colab |
 | 2.79 | The Dash sidebar redraws after 1.5 and 3 seconds for slow page loads (Codespaces) |
 
+(changes-packaging)=
 ### Packaging and notebooks
 
 | Version | Change |
@@ -182,6 +188,7 @@ This needed a number of changes and fixes, listed below.
 | 2.63 | Models with both implicit and normalized equations can be solved |
 | 2.63 | `model_cvx.mv_opt` can maximize as well as minimize |
 
+(changes-drawing)=
 ### Drawing and causality
 
 | Version | Change |
@@ -194,6 +201,7 @@ This needed a number of changes and fixes, listed below.
 | 2.82 | Networkx drawings show links back over periods (`gdp -> gdp(-1)`) |
 | 2.83 | `model.causality(var)`: interactive causality graph that works in JupyterLab, VS Code and JupyterLite; click a variable to move to it |
 
+(changes-reporting)=
 ### Reporting and display
 
 | Version | Change |
@@ -211,6 +219,7 @@ This needed a number of changes and fixes, listed below.
 | 2.88 | `model.explain` respects `start=` and `end=` |
 | 2.88 | `dekomp` growth tables show 3 decimals, so small shocks no longer show as 0.0% |
 
+(changes-widgets)=
 ### Input widgets and apps
 
 | Version | Change |
@@ -223,6 +232,7 @@ This needed a number of changes and fixes, listed below.
 | 2.84 | `modelinput_shiny.make_app(widgetdef)`: a standalone Shiny app built from the same widget definitions, which also runs in the browser with Shinylive |
 | 2.84 | `show_app` shows a Shiny app inside a notebook |
 
+(changes-files)=
 ### Model files and helpers
 
 | Version | Change |
@@ -232,6 +242,7 @@ This needed a number of changes and fixes, listed below.
 | 2.71 | `.pcimx` (parquet) files make `modeldump` / `modelload` fast |
 | 2.79 | Structure-only `.pcims` files: dump without data, load with `run=False` |
 | 2.79 | `large=True` falls back to json when there is no dataframe |
+| 2.90 | `model.run_on_load = True` is saved by `modeldump`; `modelload` then simulates the model with the saved period and options (`run=None` is the new default; `run=True`/`False` still decides) |
 
 ## Onboarding
 
@@ -250,6 +261,7 @@ This needed a number of changes and fixes, listed below.
 | Version | Change |
 |---|---|
 | 2.88 | `model.test_model(df, ref_df=)`: one-pass check of a model against known results |
+| 2.92 | `model.test_model` reports equations whose calculated value is NaN, with the number of NaN periods and the first one (before, NaN slipped through the tolerance test) |
 
 ### Clearer error messages
 
@@ -283,6 +295,8 @@ This needed a number of changes and fixes, listed below.
 | 2.88 | `targets_instruments` restores options and sample, also when it fails |
 | 2.88 | The `fair_max_iterations` option is no longer ignored |
 | 2.88 | Legacy jit solvers rebuild the transpiled code when it changes |
+| 2.90 | `newtonstack_ng(split=1)` works when the core reads no core variable (only leads or a fixed period of the prolog); it raised `AttributeError` |
+| next | A solution with NaN or inf is no longer reported as converged, in the `_ng` solvers and in `sim`, `sim1d` and `base_sim`; the Gauss-Seidel solvers stop iterating and name the NaN variables |
 
 ### Equations and parsing
 
@@ -293,6 +307,7 @@ This needed a number of changes and fixes, listed below.
 | 2.88 | `LOGIT(1-S)` is expanded with parentheses |
 | 2.88 | `CONSUM(-1)` is no longer read as `SUM`, and `RDIFF(-1)` is no longer read as `DIFF` |
 | 2.89 | A function name followed by a signed number, such as `LOG(+25)`, loads again (2.88 refused it, which stopped FRB/US models from loading) |
+| 2.92 | Makemodel `type_input='eviews'` no longer fails with an `ImportError` |
 
 ### Attribution, reports and display
 
@@ -328,3 +343,4 @@ Code written for the book may behave differently in these cases:
 | 2.88 | `model.test_model` is the new version; the old one is `model.test_model_old` |
 | 2.88 | `model_Excel` is now `modelgrabexcel` (the old name warns) |
 | 2.89 | `newtonstack_ng` uses `split=1` by default; `split=0` gives the old behaviour (the solutions agree within the convergence tolerance) |
+| next | A run that ends with NaN or inf in the solution now reports non-convergence; before, it could be reported as converged |

@@ -27,7 +27,7 @@ project:
     - file: installing.md
       title: Installing ModelFlow
     - file: whats_new.ipynb
-      title: What is new
+      title: New features by example
     - file: changes_since_book.md
       title: All changes since the book
     - file: solvers.ipynb
